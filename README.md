@@ -4,8 +4,7 @@
 
 A microservice, which should be used for logging the messages of all other microservices in an environment.
 
-
-# API endpoints
+## API endpoints
 
 | Route | Method | Description |
 | ----- | ------ | ----------- |
@@ -15,10 +14,11 @@ A microservice, which should be used for logging the messages of all other micro
 | /v1/request/(:request)/logger | POST | Create log file for a specific request |
 | /v1/request/(:request)/logger | DELETE | Close file handle for log file of specific request |
 
+## Enviroment variables
 
-# Enviroment variables
+The following environment variables could be set, to configure the microservice
 
-## Variables for HTTPS configuration
+### Variables for HTTPS configuration
 
 | Variable | Default value | Description |
 | -------- | ------------- | ----------- |
@@ -26,7 +26,7 @@ A microservice, which should be used for logging the messages of all other micro
 | CERTIFICATE_FILE | | The path, where the file for the certificate can be found |
 | PRIVATE_KEY_FILE | | The path, where the file for the private key can be found |
 
-## Variables for port configuration
+### Variables for port configuration
 
 | Variable | Default value | Description |
 | -------- | ------------- | ----------- |
@@ -35,7 +35,7 @@ A microservice, which should be used for logging the messages of all other micro
 | LOGGER_HTTP_SOCKET_PORT | 8080 | The port, on which the websocket of the service could be reached via HTTP |
 | LOGGER_HTTPS_SOCKET_PORT | 8443 | The port, on which the websocket of the service could be reached via HTTPS |
 
-## Variables for the database connection
+### Variables for the database connection
 
 | Variable | Default value | Description |
 | -------- | ------------- | ----------- |
