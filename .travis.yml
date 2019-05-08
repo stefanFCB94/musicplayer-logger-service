@@ -1,4 +1,6 @@
 language: node_js
+node_js:
+  - "10"
 env:
   - NODE_ENV=test
 
@@ -12,7 +14,7 @@ before_script:
   - openssl req -new -x509 -newkey rsa:4096 -keyout ./config/ssl/musicserver.key -out ./config/ssl/musicserver.crt -days 365 -subj "/C=DE/ST=Bavaria/L=Test/O=Teste/OU=DE/CN=www.example.com" -nodes
   - npm install
   - npm run compile
-  - docker-compse up
+  - docker-compose up
 
 script:
   - npm test
