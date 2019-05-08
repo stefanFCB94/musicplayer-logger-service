@@ -18,3 +18,13 @@ before_script:
 
 script:
   - ./test.sh
+
+before_deploy:
+  - cd $TRAVIS_BUILD_DIR
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: bash travis_deploy.sh
+  on:
+    branch: master

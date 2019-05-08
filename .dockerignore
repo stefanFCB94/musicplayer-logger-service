@@ -1,0 +1,5 @@
+config
+data
+dist
+logs
+node_modules
