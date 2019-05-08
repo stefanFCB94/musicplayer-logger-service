@@ -1,0 +1,87 @@
+version: '2.1'
+
+services:
+  
+  db:
+    image: postgres:11.1-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 0JjV5(G26,^{a&L8
+      POSTGRES_USER: logger
+      POSTGRES_DB: logger
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U logger"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  appl:
+    image: node:11-alpine
+    environment:
+      NODE_ENV: test
+    volumes: 
+      - .:/usr/src/service
+      - ./data/logs:/usr/src/service/logs
+    working_dir: /usr/src/service
+    command: sh -c "apk add --no-cache curl && npm run dev"
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+      - 8443:8443
+    environment:
+      - NODE_ENV=test
+      - USE_HTTPS=true
+      - CERTIFICATE_FILE=./config/ssl/musicserver.crt
+      - PRIVATE_KEY_FILE=./config/ssl/musicserver.key
+      - LOGGER_HTTP_PORT=80
+      - LOGGER_HTTPS_PORT=443
+      - LOGGER_HTTP_SOCKET_PORT=8080
+      - LOGGER_HTTPS_SOCKET_PORT=8443
+      - DB_HOST=db
+      - DB_PORT=5432
+      - LOGGER_DB_USERNAME=logger
+      - LOGGER_DB_PASSWORD=0JjV5(G26,^{a&L8
+      - LOGGER_DB_DATABASE=logger
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: curl -f http://localhost || exit 1
+      interval: 5s
+      timeout: 2s
+    
+
+
+  test:
+    image: node:11-alpine
+    environment:
+      NODE_ENV: test
+    volumes:
+      - .:/usr/src/service
+      - ./data/logs:/usr/src/service/logs
+    working_dir: /usr/src/service
+    depends_on:
+      appl:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=test
+      - APPL_HOST=appl
+      - USE_HTTPS=true
+      - CERTIFICATE_FILE=./config/ssl/musicserver.crt
+      - PRIVATE_KEY_FILE=./config/ssl/musicserver.key
+      - LOGGER_HTTP_PORT=80
+      - LOGGER_HTTPS_PORT=443
+      - LOGGER_HTTP_SOCKET_PORT=8080
+      - LOGGER_HTTPS_SOCKET_PORT=8443
+      - DB_HOST=db
+      - DB_PORT=5432
+      - LOGGER_DB_USERNAME=logger
+      - LOGGER_DB_PASSWORD=0JjV5(G26,^{a&L8
+      - LOGGER_DB_DATABASE=logger
+

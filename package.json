@@ -8,7 +8,10 @@
     "start": "npm run compile && node dist/index.js",
     "dev": "node ./node_modules/nodemon/bin/nodemon.js --config nodemon.json",
     "lint": "./node_modules/.bin/tslint --project .",
-    "test": "./node_modules/.bin/jest"
+    "test": "./node_modules/.bin/jest",
+    "test-run": "docker-compose -f docker-compose.test.yml run test npm test",
+    "test-up": "npm install && npm run compile && docker-compose -f docker-compose.test.yml up --timeout 1 --no-build -d",
+    "test-down": "docker-compose -f docker-compose.test.yml stop"
   },
   "keywords": [],
   "author": "Stefan Läufle",

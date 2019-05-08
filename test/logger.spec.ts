@@ -39,7 +39,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should create log file for service and return status 204', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/service/service1/logger')
         .expect(204)
         .end(async (err) => {
@@ -62,12 +62,12 @@ describe('Integeration tests logging', () => {
     });
 
     it('should return 204, after closing logger', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/service/service1/logger')
         .end((err, data) => {
           if (err) return done(err);
 
-          request('https://localhost')
+          request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
             .delete('/v1/service/service1/logger')
             .expect(204)
             .end((err, data) => {
@@ -85,7 +85,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should create log file for request an return status 204', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/request/101/logger')
         .expect(204)
         .end(async (err, data) => {
@@ -109,7 +109,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should return status 204', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .delete('/v1/request/101/logger')
         .end((err) => {
           if (err) return done(err);
@@ -131,12 +131,12 @@ describe('Integeration tests logging', () => {
       await fs.emptyDir('./data/logs');
       await client.query('delete from log_level');
 
-      await request('https://localhost').delete('/v1/service/service1/logger');
-      await request('https://localhost').delete('/v1/request/123/logger');
+      await request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`).delete('/v1/service/service1/logger');
+      await request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`).delete('/v1/request/123/logger');
     });
 
     it('should return status code 204', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/logs')
         .send({ service: 'service1', request: 123, message: 'message', level: 'debug' })
         .expect(204)
@@ -147,7 +147,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should create the log file for the service, even when logger was not initialized before', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/logs')
         .send({ service: 'service1', request: 123, message: 'message', level: 'debug' })
         .expect(204)
@@ -168,7 +168,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should create the log file for the request, even when the logger was not initialized before', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/logs')
         .send({ service: 'service1', request: 123, message: 'message', level: 'debug' })
         .expect(204)
@@ -189,7 +189,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should log the message in service log file', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/logs')
         .send({ service: 'service1', request: 123, message: 'message', level: 'info' })
         .expect(204)
@@ -210,7 +210,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should log the message in the request log file', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/logs')
         .send({ service: 'service1', request: 123, message: 'message', level: 'debug' })
         .expect(204)
@@ -231,7 +231,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should not log the message for the service, if the log level of the message is not high enough', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/logs')
         .send({ service: 'service1', request: 123, message: 'message', level: 'debug' })
         .expect(204)
@@ -252,7 +252,7 @@ describe('Integeration tests logging', () => {
     });
 
     it('should not log the message for the request, if the log level of the message is not high enough', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/logs')
         .send({ service: 'service1', request: 123, message: 'message', level: 'silly' })
         .expect(204)

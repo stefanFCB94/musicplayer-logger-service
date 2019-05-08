@@ -14,6 +14,7 @@ describe('Integration tests log level configuration', () => {
       password: process.env.LOGGER_DB_PASSWORD,
       database: process.env.LOGGER_DB_DATABASE,
     });
+
     await client.connect();
   });
 
@@ -36,7 +37,7 @@ describe('Integration tests log level configuration', () => {
 
 
     it('should return the complete data with an status code 200', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .get('/v1/config/levels/service')
         .set('Accept', 'application/json')
         .expect(200)
@@ -66,7 +67,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should insert the log level, if service is not defined', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/config/levels/service')
         .send({ service: 'service1', level: 'warn' })
         .set('Accept', 'application/json')
@@ -97,7 +98,7 @@ describe('Integration tests log level configuration', () => {
     it('should update the log level, if service is already defined', (done) => {
       client.query("insert into log_level values('service1', 'info')")
         .then(() => {
-          request('https://localhost')
+          request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
             .post('/v1/config/levels/service')
             .send({ service: 'service1', level: 'warn' })
             .set('Accept', 'application/json')
@@ -126,7 +127,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 400 with correct error, if invalid log level is passed to api', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/config/levels/service')
         .send({ service: 'service1', level: 'invalid' })
         .set('Accept', 'application/json')
@@ -144,7 +145,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 400 with correct error, if a too long service name is passed', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/config/levels/service')
         .send({ service: '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789', level: 'info' })
         .set('Accept', 'application/json')
@@ -161,7 +162,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 400 with correct error, if parameter service is not passed to the api', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/config/levels/service')
         .send({ level: 'info' })
         .set('Accept', 'application/json')
@@ -177,7 +178,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 400 with correct error, if parameter level is not passed to api', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .post('/v1/config/levels/service')
         .send({ service: 'service1' })
         .set('Accept', 'application/json')
@@ -205,7 +206,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 404 with correct error, if service is not found', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .get('/v1/config/levels/service/service3')
         .set('Accept', 'application/json')
         .expect(404)
@@ -221,7 +222,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 200 with the data of the service', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .get('/v1/config/levels/service/service1')
         .set('Accept', 'application/json')
         .expect(200)
@@ -248,7 +249,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should insert the log level, if service is not defined', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .put('/v1/config/levels/service/service1')
         .send({ service: 'service1', level: 'warn' })
         .set('Accept', 'application/json')
@@ -279,7 +280,7 @@ describe('Integration tests log level configuration', () => {
     it('should update the log level, if service is already defined', (done) => {
       client.query("insert into log_level values('service1', 'info')")
         .then(() => {
-          request('https://localhost')
+          request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
             .put('/v1/config/levels/service/service1')
             .send({ service: 'service1', level: 'warn' })
             .set('Accept', 'application/json')
@@ -308,7 +309,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 400 with correct error, if invalid log level is passed to api', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .put('/v1/config/levels/service/service1')
         .send({ service: 'service1', level: 'invalid' })
         .set('Accept', 'application/json')
@@ -326,7 +327,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 400 with correct error, if a too long service name is passed', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .put('/v1/config/levels/service/service1')
         .send({ service: '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789', level: 'info' })
         .set('Accept', 'application/json')
@@ -343,7 +344,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 400 with correct error, if parameter service is not passed to the api', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .put('/v1/config/levels/service/service1')
         .send({ level: 'info' })
         .set('Accept', 'application/json')
@@ -359,7 +360,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 400 with correct error, if parameter level is not passed to api', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .put('/v1/config/levels/service/service1')
         .send({ service: 'service1' })
         .set('Accept', 'application/json')
@@ -387,7 +388,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 200 and deletes the service from the database', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .delete('/v1/config/levels/service/service1')
         .set('Accept', 'application/json')
         .expect(200)
@@ -412,7 +413,7 @@ describe('Integration tests log level configuration', () => {
     });
 
     it('should return 404, if service could not be found', (done) => {
-      request('https://localhost')
+      request(`https://${process.env.APPL_HOST}:${process.env.LOGGER_HTTPS_PORT}`)
         .delete('/v1/config/levels/service/service3')
         .set('Accept', 'application/json')
         .expect(404)
