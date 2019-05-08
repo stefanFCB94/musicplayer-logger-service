@@ -1,5 +1,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a22beac2362849fdac8dc64133c8e13c)](https://www.codacy.com/app/stefanFCB94/musicplayer-logger-service?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=stefanFCB94/musicplayer-logger-service&amp;utm_campaign=Badge_Grade)
+![Travis (.org) branch](https://img.shields.io/travis/stefanFCB94/musicplayer-logger-service/master.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/stefanfcb94/musicplayer-logger-service.svg)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/stefanFCB94/musicplayer-logger-service.svg)
 
 # Logger microservice
 
